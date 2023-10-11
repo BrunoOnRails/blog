@@ -1,0 +1,65 @@
+<div class="shadow bg-light p-2 rounded">
+
+  <div class="text-center mb-5">
+
+    <h1><%= @post.title %></h1>
+
+    <p class="text-muted" >
+      <strong>Por <%= @post.author %> </strong>
+      <br>
+      <%= l @post.created_at, format: :long %>
+    </p>
+
+  </div>
+
+  <div class="px-5 mb-3" >
+    <%= sanitize @post.body.gsub('\n','<br>').html_safe %>
+  </div>
+</div>
+
+<div class="container shadow-sm bg-light rounded ">
+  <div class="m-5" >
+    <div class="text-center" >
+      <h4> 
+        <%= pluralize(@post.comments.count,'Comentário') %> 
+        <% if @post.comments.none? %>
+          <br>
+          <span class="badge bg-success">Seja o primeiro a comentar!</span></span>
+        <% end %>
+      </h4>
+    </div>
+
+    <%= form_with model: @comment, local: true do |form| %>
+      <%= form.hidden_field :post_id, value: @post.id %>
+      <div class="form-group">
+        <%= form.label :author%>
+        <%= form.text_field :author, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= form.label :body %>
+        <%= form.text_area :body, class: "form-control", rows: 3 %>
+      </div>
+    <br>
+    <%= form.submit 'Comentar', class:'btn btn-primary mb-3', data:{disable_with: 'Enviando...'}  %>
+    <% end %>
+  </div>
+</div>
+
+<% @comments.each do |comment| %>
+  <div class="container shadow-sm mb-3 bg-light rounded ">
+    <div class="row">
+      <div class= "col pt-3">
+        <strong><%= comment.author%></strong>
+      </div>
+      <div class="col text-end pt-3">
+        <em data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title=" <%= l comment.created_at,format: :long %> "> <%= time_ago_in_words comment.created_at%> atrás</em>
+      </div>
+    </div>
+    <hr>
+    <div class="pb-3">
+      <%= sanitize comment.body.gsub('\n','<br>').html_safe%>
+    </div>
+  </div>  
+<% end %>
+</div>

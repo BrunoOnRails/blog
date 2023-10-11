@@ -1,0 +1,12 @@
+<% @posts.each do |post| %>
+  <%= render post%>
+  <p>
+  <% if Post.count > 0 %>
+    <hr>
+  <% end %>
+<% end %>
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+  <div class="btn btn-success">
+    <%= link_to "Novo post", new_post_path, class: "text-white text-white link-underline link-underline-opacity-0"%>
+  </div>
+</div>
